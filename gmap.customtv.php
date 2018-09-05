@@ -2,12 +2,20 @@
 if (IN_MANAGER_MODE != 'true') {
 	die('<h1>Error:</h1><p>Please use the MODx content manager instead of accessing this file directly.</p>');
 }
-$site_url = MODX_SITE_URL;
+
+// Определить в конфигурации сайта конфиг API_KEY
+// Для этого можно использовать Client Settings for Evolution CMS - https://github.com/mnoskov/clientsettings/
+// В настройках модуля удалить "Prefix for settings" Оставить поле пустым. В файле конфигурации создать поле API_KEY.
+// Либо использовать собственный плагин для рендера настройки API_KEY в Конфигурации сайта.
+
+$API_KEY = $modx->config['API_KEY'] ? $modx->config['API_KEY'] : "YOUR_API_KEY";
+
 $dirTv = str_replace("\\", "/", dirname(__FILE__)."/");
 $dirTv = "/" . str_replace(MODX_BASE_PATH, "", $dirTv);
+
 $includeGmap = <<<EOD
 <link media="all" rel="stylesheet" href="{$dirTv}css/gmap.css" />
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqObB5jDzWbLoN0_oDxajFw9IsCYrcAjc&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=${API_KEY}"></script>
 <script type="text/javascript">
 	(function(jq){
 		jq(document).ready(function(){
@@ -137,8 +145,8 @@ $includeGmap = <<<EOD
 	}(jQuery));
 </script>
 EOD;
-$default = '{"center":{"lat":53.203821794214086,"lng":50.10991940269878},"marker":{"position":{"lat":53.2038235530191,"lng":50.10992000933027},"title":""},"zoom":10,"infowindow":{"content":"<p>The <a href=\"http://evo.im/\" target=\"_blank\" rel=\"noopener\">EVO Community</a> provides a great starting point to learn all things Evolution CMS, or you can also <a href=\"http://evo.im/\">see some great learning resources</a> (books, tutorials, blogs and screencasts).</p>\n<p>Welcome to EVO!</p>"}}';
-$value = empty($row['value']) ? $default : $row['value'];//htmlspecialchars(stripslashes())
+$default = '{"center":{"lat":53.2038235530191,"lng":50.10992000933027},"marker":{"position":{"lat":53.2038235530191,"lng":50.10992000933027},"title":""},"zoom":10,"infowindow":{"content":"<p>The <a href=\"http://evo.im/\" target=\"_blank\" rel=\"noopener\">EVO Community</a> provides a great starting point to learn all things Evolution CMS, or you can also <a href=\"http://evo.im/\">see some great learning resources</a> (books, tutorials, blogs and screencasts).</p>\n<p>Welcome to EVO!</p>"}}';
+$value = empty($row['value']) ? $default : $row['value'];
 $id = $row['id'];
 $outputGmap = <<<EOD
 <div class="gmaptv-block">
