@@ -1,2 +1,1 @@
-# gmap
-Custom Template Variable (TV) Google Maps for Evolution CMS (MODX Evo)
+# Custom Template Variable (TV) Google Maps for Evolution CMS (MODX Evo)
